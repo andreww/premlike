@@ -21,7 +21,8 @@ authors = (
 copyright = f'2026, {authors}'
 author = authors
 
-release = premlike.__version__
+#release = premlike.__version__
+release = 0.1.0-alpha1
 
 # -- General configuration
 
