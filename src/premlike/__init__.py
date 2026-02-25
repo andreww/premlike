@@ -5,3 +5,4 @@ from .const import R_EARTH
 from .PREM import PREM
 
 __all__ = ["OneDModel", "R_EARTH", "PREM", "tabulate_model"]
+__version__ = "0.1.0-alpha1"
