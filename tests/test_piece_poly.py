@@ -1,19 +1,19 @@
 """
-Test cases for PeicewisePolynomial class
+Test cases for PiecewisePolynomial class
 
 """
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-import premlike.peice_poly as pp
+import premlike.piece_poly as pp
 
 
 def test_constant():
     """
     Check that a constant function gives allways gives its value
     """
-    poly = pp.PeicewisePolynomial(np.array([[2.0], [2.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[2.0], [2.0]]),
                                   np.array([0.0, 0.5, 1.0]))
     assert poly(0.0) == 2.0
     assert poly(0.25) == 2.0
@@ -37,7 +37,7 @@ def test_quadratic():
     """
     Check that a quadratic function gives the correct value
     """
-    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]),
                                   np.array([0.0, 0.5, 1.0]))
     assert poly(0.0) == 0.0
     assert poly(0.25) == 0.25**2
@@ -106,7 +106,7 @@ def test_one_over_x():
     Check that a 1/x function gives the correct value using a 
     quadratic for x less than 0.5
     """
-    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 0.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 0.0]]),
                                   np.array([0.0, 0.5, 1.0]),
                                   neg_coeffs=np.array([[0.0, 0.0], [0.0, 1.0]]))
     assert poly(0.0) == 0.0
@@ -127,9 +127,9 @@ def test_one_over_x():
 
 def test_step():
     """
-    Check that two peicewise constants give the right values
+    Check that two piecewise constants give the right values
     """
-    poly = pp.PeicewisePolynomial(np.array([[2.0], [20.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[2.0], [20.0]]),
                                   np.array([0.0, 0.5, 1.0]))
     assert poly(0.0) == 2.0
     assert poly(0.25) == 2.0
@@ -163,7 +163,7 @@ def test_deriv():
     And we can multiply everything by 10 and split the
     polynomial.
     """
-    poly = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                             [40.0, 30.0, 20.0]]),
                                   np.array([0.0, 2.0, 4.0]))
     expected_deriv_coefs = np.array([[3.0, 4.0], [30.0, 40.0]])
@@ -193,7 +193,7 @@ def test_recip_deriv():
     And we can multiply everything by 10 and split the
     polynomial.
     """
-    poly = pp.PeicewisePolynomial(np.array([[3.0, 4.0],
+    poly = pp.PiecewisePolynomial(np.array([[3.0, 4.0],
                                             [30.0, 40.0]]),
                                   np.array([0.0, 2.0, 4.0]),
                                   neg_coeffs=np.array([[0.0, 2.0, 3.0],
@@ -218,7 +218,7 @@ def test_antideriv():
     And we can multiply everything by 10 and split the
     polynomial.
     """
-    poly = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                             [40.0, 30.0, 20.0]]),
                                   np.array([0.0, 2.0, 4.0]))
     expected_antideriv_coefs = np.array([[0.0, 4.0, 3.0/2.0, 2.0/3.0],
@@ -237,7 +237,7 @@ def test_recip_antideriv():
     And we can multiply everything by 10 and split the
     polynomial.
     """
-    poly = pp.PeicewisePolynomial(np.array([[4.0],
+    poly = pp.PiecewisePolynomial(np.array([[4.0],
                                             [40.0]]),
                                   np.array([0.0, 2.0, 4.0]),
                                   neg_coeffs=np.array([[0.0, 0.0, -2.0, -6.0],
@@ -262,7 +262,7 @@ def test_log_deriv_int():
     And we can multiply everything by 10 and split the
     polynomial.
     """
-    poly = pp.PeicewisePolynomial(np.array([[3.0, 4.0],
+    poly = pp.PiecewisePolynomial(np.array([[3.0, 4.0],
                                             [30.0, 40.0]]),
                                   np.array([0.0, 2.0, 4.0]),
                                   neg_coeffs=np.array([[5.0, 2.0, 3.0],
@@ -297,7 +297,7 @@ def test_integrate():
     And we can multiply everything by 10 and split the
     polynomial with addition over breakpoints.
     """
-    poly = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                             [40.0, 30.0, 20.0]]),
                                   np.array([0.0, 2.0, 4.0]))
     antideriv = poly.antiderivative()
@@ -330,13 +330,13 @@ def test_mult():
     and we split this polynomial in two to excercise the
     breakpoint checking.
     """
-    poly1 = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly1 = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                              [4.0, 3.0, 2.0]]),
                                    np.array([0.0, 2.0, 4.0]))
-    poly2 = pp.PeicewisePolynomial(np.array([[1.0, 2.0, 4.0],
+    poly2 = pp.PiecewisePolynomial(np.array([[1.0, 2.0, 4.0],
                                              [1.0, 2.0, 4.0]]),
                                    np.array([0.0, 2.0, 4.0]))
-    expect_poly_mult = pp.PeicewisePolynomial(
+    expect_poly_mult = pp.PiecewisePolynomial(
         np.array([[4.0, 11.0, 24.0, 16.0, 8.0],
                   [4.0, 11.0, 24.0, 16.0, 8.0]]),
         np.array([0.0, 2.0, 4.0]))
@@ -354,17 +354,17 @@ def test_mult2():
     breakpoint checking. Also check that order does not matter and
     we can square both polynomials
     """
-    poly1 = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly1 = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                              [4.0, 3.0, 2.0]]),
                                    np.array([0.0, 2.0, 4.0]),
                                    np.array([[0.0, 3.0, 4.0],
                                              [0.0, 3.0, 4.0]]))
-    poly2 = pp.PeicewisePolynomial(np.array([[1.0, 2.0, 4.0],
+    poly2 = pp.PiecewisePolynomial(np.array([[1.0, 2.0, 4.0],
                                              [1.0, 2.0, 4.0]]),
                                    np.array([0.0, 2.0, 4.0]),
                                    np.array([[0.0, 0.0, 2.0],
                                              [0.0, 0.0, 2.0]]))
-    expect_poly_mult = pp.PeicewisePolynomial(
+    expect_poly_mult = pp.PiecewisePolynomial(
         np.array([[30.0, 23.0, 24.0, 16.0, 8.0],
                   [30.0, 23.0, 24.0, 16.0, 8.0]]),
         np.array([0.0, 2.0, 4.0]),
@@ -380,7 +380,7 @@ def test_mult2():
     npt.assert_allclose(calc_poly_mult.negative_coeffs, expect_poly_mult.negative_coeffs)
 
     # Square poly 1
-    expect_poly_mult = pp.PeicewisePolynomial(
+    expect_poly_mult = pp.PiecewisePolynomial(
         np.array([[50.0, 36.0, 25.0, 12.0, 4.0],
                   [50.0, 36.0, 25.0, 12.0, 4.0]]),
         np.array([0.0, 2.0, 4.0]),
@@ -400,15 +400,15 @@ def test_mult3():
     and we split the polynomials in two to excercise the
     breakpoint checking. Also check that order does not matter
     """
-    poly1 = pp.PeicewisePolynomial(np.array([[4.0, 3.0, 2.0],
+    poly1 = pp.PiecewisePolynomial(np.array([[4.0, 3.0, 2.0],
                                              [4.0, 3.0, 2.0]]),
                                    np.array([0.0, 2.0, 4.0]),
                                    np.array([[0.0, 3.0, 4.0],
                                              [0.0, 3.0, 4.0]]))
-    poly2 = pp.PeicewisePolynomial(np.array([[1.0, 2.0, 4.0],
+    poly2 = pp.PiecewisePolynomial(np.array([[1.0, 2.0, 4.0],
                                              [1.0, 2.0, 4.0]]),
                                    np.array([0.0, 2.0, 4.0]))
-    expect_poly_mult = pp.PeicewisePolynomial(
+    expect_poly_mult = pp.PiecewisePolynomial(
         np.array([[26.0, 23.0, 24.0, 16.0, 8.0],
                   [26.0, 23.0, 24.0, 16.0, 8.0]]),
         np.array([0.0, 2.0, 4.0]),
