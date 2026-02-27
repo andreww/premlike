@@ -18,10 +18,10 @@ Modules
 .. automodule:: premlike.earth_model
     :members:
 
-`peice_poly`
+`piece_poly`
 ^^^^^^^^^^^^
 
-.. automodule:: premlike.peice_poly
+.. automodule:: premlike.piece_poly
     :members:
 
 `physics`
