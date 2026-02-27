@@ -1,7 +1,7 @@
 import numpy as np
 
 from .const import G, R_EARTH
-from .peice_poly import PeicewisePolynomial as PP
+from .piece_poly import PiecewisePolynomial as PP
 
 
 def calculate_vs(
