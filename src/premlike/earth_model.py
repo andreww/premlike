@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from .const import R_EARTH
-from .peice_poly import PeicewisePolynomial as PP
+from .piece_poly import PiecewisePolynomial as PP
 from .physics import (
     calculate_bulk_modulus,
     calculate_density,

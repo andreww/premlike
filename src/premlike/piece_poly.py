@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding=utf8
 """
-Peicewise polynomials like PREM
+Piecewise polynomials like PREM
 
 """
 
 import numpy as np
 
 
-class PeicewisePolynomial:
+class PiecewisePolynomial:
     """
     Piecewise Polynomials a different way
 
@@ -163,7 +163,7 @@ class PeicewisePolynomial:
                         deriv_neg_coeffs[seg, i + 1] = (
                             -1 * self.negative_coeffs[seg, i] * i
                         )
-        deriv = PeicewisePolynomial(deriv_coeffs, deriv_breakpoints, deriv_neg_coeffs)
+        deriv = PiecewisePolynomial(deriv_coeffs, deriv_breakpoints, deriv_neg_coeffs)
         return deriv
 
     def antiderivative(self):
@@ -192,7 +192,7 @@ class PeicewisePolynomial:
                         antideriv_neg_coeffs[seg, i - 1] = (
                             -1 * self.negative_coeffs[seg, i] / (i - 1)
                         )
-        antideriv = PeicewisePolynomial(
+        antideriv = PiecewisePolynomial(
             antideriv_coeffs, antideriv_breakpoints, antideriv_neg_coeffs
         )
         return antideriv
@@ -239,7 +239,7 @@ class PeicewisePolynomial:
             # add all the other segments
             if bpi > 0:
                 ip_coeffs[bpi, 0] = ip_coeffs[bpi, 0] + antiderivative.integrate(0, bp)
-        return PeicewisePolynomial(ip_coeffs, antiderivative.breakpoints)
+        return PiecewisePolynomial(ip_coeffs, antiderivative.breakpoints)
 
     def mult(self, other: "PeicewisePolynomial") -> "PeicewisePolynomial":
         # FIXME - for this approach brakepoints need to be same place too
@@ -327,7 +327,7 @@ class PeicewisePolynomial:
         # TODO: handle non-overlapping breakpoints (first chop the
         # segments). Also implement do poly * const etc.
 
-        mult_poly = PeicewisePolynomial(
+        mult_poly = PiecewisePolynomial(
             mult_coefs, mult_breakpoints, mult_negative_coefs
         )
         return mult_poly
