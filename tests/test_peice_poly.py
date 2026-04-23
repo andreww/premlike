@@ -4,6 +4,7 @@ Test cases for PeicewisePolynomial class
 """
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 import premlike.peice_poly as pp
 
@@ -53,6 +54,33 @@ def test_quadratic():
     npt.assert_allclose(poly(np.array([0.25, 0.5, 0.75, 1.0]),
                              break_down=True),
                         np.array([0.25**2, 0.5**2, 0.75**2, 1.0]))
+
+
+vectestdata = ((0.0, 0.0),
+               (np.array([0.0]), np.array([0.0])),
+               (np.array([0.0, 0.0]), np.array([0.0, 0.0])),
+               (np.array([0.0, 0.0, 0.0]), np.array([0.0, 0.0, 0.0])),
+               (np.array([[0.0], [0.0]]), np.array([[0.0], [0.0]])),
+               (np.array([[0.0, 0.0], [0.0, 0.0]]),
+                np.array([[0.0, 0.0], [0.0, 0.0]])),
+               (np.zeros((10, 10)), np.zeros((10, 10))),
+               (np.zeros((10, 1)), np.zeros((10, 1))),
+               (np.zeros((1, 10)), np.zeros((1, 10))),
+               (np.zeros((1, 2, 3, 4, 5, 6)), np.zeros((1, 2, 3, 4, 5, 6)))
+               )
+
+@pytest.mark.parametrize("indat, output", vectestdata)
+def test_vectorization(indat, output):
+    """
+    Check the input and output value, shape and type
+    """
+    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 10.0]]),
+                                  np.array([0.0, 0.5, 1.0]))
+    calc = poly(indat)
+    npt.assert_allclose(calc, output)
+    assert type(calc) is type(output)
+    if isinstance(type(output), np.ndarray):
+        assert calc.shape == output.shape
 
 
 def test_one_over_x():
