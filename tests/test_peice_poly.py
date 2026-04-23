@@ -56,6 +56,24 @@ def test_quadratic():
                         np.array([0.25**2, 0.5**2, 0.75**2, 1.0]))
 
 
+def test_bounds():
+    """
+    Check that we get the right errors out of the domain
+    """
+    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]),
+                                  np.array([0.0, 0.5, 1.0]))
+    # Should be ok on the upper or lower bound but raise an error outside the
+    # domain
+    with pytest.raises(ValueError):
+        poly(-0.1)
+    with pytest.raises(ValueError):
+        poly(1.1)
+    with pytest.raises(ValueError):
+        poly(np.array([0.0, -0.1]))
+    with pytest.raises(ValueError):
+        poly(np.array([1.1, 0.5]))
+
+
 vectestdata = ((0.0, 0.0),
                (np.array([0.0]), np.array([0.0])),
                (np.array([0.0, 0.0]), np.array([0.0, 0.0])),
