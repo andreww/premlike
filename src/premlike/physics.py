@@ -1,3 +1,4 @@
+import functools
 import numpy as np
 
 from .const import G, R_EARTH
@@ -186,6 +187,7 @@ def calculate_pressure(density_poly: PP, r):
     return p
 
 
+@functools.lru_cache
 def _setup_mass_poly(density_poly: PP) -> PP:
     # setup polynomials for mass. This is 4*pi*\int rho(r)*r^2 dr
     bp = density_poly.breakpoints
@@ -198,6 +200,7 @@ def _setup_mass_poly(density_poly: PP) -> PP:
     return mass_poly
 
 
+@functools.lru_cache
 def _setup_moi_poly(density_poly: PP) -> PP:
     # setup polynomials for MOI. This is 2/3*4*pi*\int rho(r)*r^4 dr
     bp = density_poly.breakpoints
@@ -212,6 +215,7 @@ def _setup_moi_poly(density_poly: PP) -> PP:
     return moi_poly
 
 
+@functools.lru_cache
 def _setup_gravity_poly(density_poly: PP) -> PP:
     bp = density_poly.breakpoints
     r2_params = np.tile(np.array([0.0, 0.0, 1000.0**3]), (bp.size - 1, 1))
@@ -233,6 +237,7 @@ def _setup_gravity_poly(density_poly: PP) -> PP:
     return gravity_poly
 
 
+@functools.lru_cache
 def _setup_pressure_poly(density_poly: PP) -> PP:  # breakpoints not needed?
     # Setup polynomial for pressure:
     # integrate from r to r_earth to get pressure
