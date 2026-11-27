@@ -60,7 +60,7 @@ def test_bounds():
     """
     Check that we get the right errors out of the domain
     """
-    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]]),
                                   np.array([0.0, 0.5, 1.0]))
     # Should be ok on the upper or lower bound but raise an error outside the
     # domain
@@ -92,7 +92,7 @@ def test_vectorization(indat, output):
     """
     Check the input and output value, shape and type
     """
-    poly = pp.PeicewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 10.0]]),
+    poly = pp.PiecewisePolynomial(np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 10.0]]),
                                   np.array([0.0, 0.5, 1.0]))
     calc = poly(indat)
     npt.assert_allclose(calc, output)
