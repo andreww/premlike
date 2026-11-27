@@ -355,7 +355,7 @@ class PiecewisePolynomial:
         else:
             result_neg_coeffs = np.copy(self.negative_coeffs) * scalar
 
-        result_poly = PeicewisePolynomial(result_coeffs, result_bps,
+        result_poly = PiecewisePolynomial(result_coeffs, result_bps,
                                           result_neg_coeffs)
         return result_poly
 
@@ -370,7 +370,7 @@ class PiecewisePolynomial:
         if isinstance(other, int) or isinstance(other, float):
             result = self.scalar_mult(other)
 
-        if isinstance(other, PeicewisePolynomial):
+        if isinstance(other, PiecewisePolynomial):
             result = self.mult(other)
 
         return result
