@@ -359,6 +359,29 @@ class PiecewisePolynomial:
                                           result_neg_coeffs)
         return result_poly
 
+    
+    def __mul__(self, other):
+        """
+        Overload * for PP * PP or PP * scalar
+        
+        Returns a new PeicewisePolynomal resulting from the 
+        multiplication
+        """
+        if isinstance(other, int) or isinstance(other, float):
+            result = self.scalar_mult(other)
+
+        if isinstance(other, PeicewisePolynomial):
+            result = self.mult(other)
+
+        return result
+
+    
+    def __rmul__(self, other):
+        """
+        Overload * for scalar * PP
+        """
+        return self.__mul__(other)
+
 
 def _standardize_coeffs_shapes(coeffs: np.ndarray) -> np.ndarray:
     if coeffs.ndim == 1:
