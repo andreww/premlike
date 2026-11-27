@@ -241,7 +241,7 @@ class PiecewisePolynomial:
                 ip_coeffs[bpi, 0] = ip_coeffs[bpi, 0] + antiderivative.integrate(0, bp)
         return PiecewisePolynomial(ip_coeffs, antiderivative.breakpoints)
 
-    def mult(self, other: "PeicewisePolynomial") -> "PeicewisePolynomial":
+    def mult(self, other: "PiecewisePolynomial") -> "PiecewisePolynomial":
         # FIXME - for this approach brakepoints need to be same place too
         assert self.coeffs.shape[0] == other.coeffs.shape[0], (
             "different number of breakpoints"
