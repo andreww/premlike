@@ -242,7 +242,15 @@ class PiecewisePolynomial:
         return PiecewisePolynomial(ip_coeffs, antiderivative.breakpoints)
 
     def mult(self, other: "PiecewisePolynomial") -> "PiecewisePolynomial":
-        # FIXME - for this approach brakepoints need to be same place too
+        """
+        Multiplication of peicewise polynomials
+
+        Returns a new PeicewisePolynomial equal to the product of two
+        existing PeicewisePolynomials.
+
+        Note that in the current implementation the breakpoints must
+        match.
+        """
         assert self.coeffs.shape[0] == other.coeffs.shape[0], (
             "different number of breakpoints"
         )
@@ -331,6 +339,48 @@ class PiecewisePolynomial:
             mult_coefs, mult_breakpoints, mult_negative_coefs
         )
         return mult_poly
+
+
+    def scalar_mult(self, scalar):
+        """
+        Multiplication of a peicewise polynomial and a scalar
+
+        Returns a new PeicewisePolynomal resulting from the multiplication
+        of a peicewise polynomial by a scalar (real or int).
+        """
+        result_coeffs = np.copy(self.coeffs) * scalar
+        result_bps = np.copy(self.breakpoints)
+        if self.negative_coeffs is None:
+            result_neg_coeffs = None
+        else:
+            result_neg_coeffs = np.copy(self.negative_coeffs) * scalar
+
+        result_poly = PiecewisePolynomial(result_coeffs, result_bps,
+                                          result_neg_coeffs)
+        return result_poly
+
+    
+    def __mul__(self, other):
+        """
+        Overload * for PP * PP or PP * scalar
+        
+        Returns a new PeicewisePolynomal resulting from the 
+        multiplication
+        """
+        if isinstance(other, int) or isinstance(other, float):
+            result = self.scalar_mult(other)
+
+        if isinstance(other, PiecewisePolynomial):
+            result = self.mult(other)
+
+        return result
+
+    
+    def __rmul__(self, other):
+        """
+        Overload * for scalar * PP
+        """
+        return self.__mul__(other)
 
 
 def _standardize_coeffs_shapes(coeffs: np.ndarray) -> np.ndarray:

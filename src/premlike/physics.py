@@ -193,10 +193,10 @@ def _setup_mass_poly(density_poly: PP) -> PP:
     bp = density_poly.breakpoints
     r2_params = np.tile(np.array([0.0, 0.0, 1000.0**3]), (bp.size - 1, 1))
     r2_poly = PP(r2_params, bp)
-    mass_poly = density_poly.mult(r2_poly)
+    mass_poly = density_poly * r2_poly
     mass_poly = mass_poly.antiderivative()
     #  integrating this gives mass:
-    mass_poly.coeffs = mass_poly.coeffs * 4.0 * np.pi
+    mass_poly = mass_poly * 4.0 * np.pi
     return mass_poly
 
 
@@ -208,10 +208,10 @@ def _setup_moi_poly(density_poly: PP) -> PP:
         np.array([0.0, 0.0, 0.0, 0.0, 1000.0**5]), (bp.size - 1, 1)
     )
     r4_poly = PP(r4_params, bp)
-    moi_poly = density_poly.mult(r4_poly)
+    moi_poly = density_poly * r4_poly
     moi_poly = moi_poly.antiderivative()
     #   integrating this gives MOI:
-    moi_poly.coeffs = moi_poly.coeffs * 4.0 * (2 / 3) * np.pi
+    moi_poly = moi_poly * 4.0 * (2 / 3) * np.pi
     return moi_poly
 
 
@@ -221,19 +221,18 @@ def _setup_gravity_poly(density_poly: PP) -> PP:
     r2_params = np.tile(np.array([0.0, 0.0, 1000.0**3]), (bp.size - 1, 1))
     r2_poly = PP(r2_params, bp)
     # Setup polynomial for gravity
-    gravity_poly = density_poly.mult(r2_poly)
+    gravity_poly = density_poly * r2_poly
     # evaluate this to get int(rho.r^2 dr)
     gravity_poly = gravity_poly.integrating_poly()
     # constants outside integral
-    gravity_poly.coeffs = gravity_poly.coeffs * 4.0 * np.pi * G
+    gravity_poly = gravity_poly * 4.0 * np.pi * G
     over_r_sq_poly = PP(
         np.zeros((bp.size - 1, 1)),
         bp,
         np.zeros((bp.size - 1, 3)),
     )
     over_r_sq_poly.negative_coeffs[:, 2] = 1.0 / 1000.0**2
-    gravity_poly = gravity_poly.mult(over_r_sq_poly)  # Mult by 1/r^2
-    gravity_poly = gravity_poly  # Evaluate to get gravity at r
+    gravity_poly = gravity_poly * over_r_sq_poly  # Mult by 1/r^2
     return gravity_poly
 
 
@@ -242,9 +241,8 @@ def _setup_pressure_poly(density_poly: PP) -> PP:  # breakpoints not needed?
     # Setup polynomial for pressure:
     # integrate from r to r_earth to get pressure
     gravity_poly = _setup_gravity_poly(density_poly)
-    pressure_poly = gravity_poly.mult(density_poly)
+    pressure_poly = gravity_poly * density_poly
     pressure_poly = pressure_poly.antiderivative()
     # Pressure units (/1E9) and density units (*1000.0)
-    pressure_poly.coeffs *= 1000.0 / 1.0e9
-    pressure_poly.negative_coeffs *= 1000.0 / 1.0e9
+    pressure_poly = pressure_poly * (1000.0 / 1.0e9)
     return pressure_poly
